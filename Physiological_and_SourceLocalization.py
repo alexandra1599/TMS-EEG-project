@@ -106,7 +106,7 @@ def main():
     print("🔄 Loading GDF data...")
 
     # Set path to folder containing the .gdf files
-    folder_path = "/Users/alexandra/Desktop/PhD/Neural Engineering/Project/Subject 202/Subject_202_FES_Online/Subject_202_Session_003_FES_Online_Visual"
+    folder_path = "/Users/alexandra/Desktop/PhD/Neural Engineering/Project/Subject 205/Subject_205_FES_Online/Subject_205_Session_003_FES_Online_Visual"
 
     # Load and merge the GDF recordings
     raw, events, event_id = load_and_merge_gdf(folder_path)
@@ -390,78 +390,10 @@ def main():
     # Create inverse operator (weighted MNE)
     inverse_operator = mne.minimum_norm.make_inverse_operator(raw.info, fwd, noise_cov,loose=0.2, depth=0.8)
 
-    '''
-    #  Apply to averaged epochs (evoked)
-    evoked = epochs.average()
-    evoked.plot()
-
-    stc = mne.minimum_norm.apply_inverse(evoked, inverse_operator,lambda2=1. / 9., method='MNE')
-
-    brain = stc.plot(
-    subject='fsaverage',
-    hemi='both',  # Show both hemispheres
-    subjects_dir=subjects_dir,
-    views='lateral',  # You can also use 'medial', 'dorsal', etc.
-    size=(800, 600),
-    background='white',
-    foreground='black',
-    initial_time=0.1,
-    time_unit='s',
-    colormap='RdBu_r',  # Red for ERS, blue for ERD
-    clim=dict(kind='value', lims=[-1e-6, 0, 6e-6])  # Set min/mid/max for colormap
-)'''
-
-    '''
-    # Adjust the view to see both hemispheres
-   # brain.show_view('medial')  # Or use 'dorsal', 'ventral', 'medial', 'lateral' etc.
-
-   # brain = stc.plot(subject=subject, subjects_dir=subjects_dir, hemi='both', views='lat')
-   # brain.save_movie('/Users/alexandra/Desktop/PhD/Neural Engineering/Project/202posttms.mp4', time_dilation=10)  # Slower playback
-
-    # Separate epochs for MI and Rest (you may already have these defined)
-    epochs_mi = epochs['9']     # Or ['9'] if using numeric events
-    epochs_rest = epochs['5']     # Or ['9'] if using numeric events
-
-    # Average (evoked response) for each
-    evoked_mi = epochs_mi.average()
-    evoked_rest = epochs_rest.average()
-
-    # Apply inverse operator to each condition
-    stc_mi = mne.minimum_norm.apply_inverse(evoked_mi, inverse_operator, lambda2=1. / 9., method='MNE')
-    stc_rest = mne.minimum_norm.apply_inverse(evoked_rest, inverse_operator, lambda2=1. / 9., method='MNE')
-
-    # === Compute log-ratio ===
-    epsilon = 1e-10  # To prevent divide-by-zero
-    log_ratio_data = np.log10((stc_mi.data + epsilon) / (stc_rest.data + epsilon))
-
-    stc_log_ratio = SourceEstimate(log_ratio_data, vertices=stc_mi.vertices,
-                               tmin=stc_mi.tmin, tstep=stc_mi.tstep,
-                               subject=stc_mi.subject)
-    
-    brain = stc_log_ratio.plot(
-    subject='fsaverage',
-    hemi='both',
-    subjects_dir=subjects_dir,
-    views='lateral',
-    size=(800, 600),
-    background='white',
-    foreground='black',
-    initial_time=0.1,
-    time_unit='s',
-    colormap='RdBu_r',
-    clim=dict(kind='value', lims=[-0.5, 0, 0.5])  # adjust to your actual data
-)
-
-    brain.show_view('dorsal')  # Or 'medial' if you'd like
-
-    brain = stc_log_ratio.plot(subject=subject, subjects_dir=subjects_dir, hemi='both', views='lat')
-    brain.save_movie('/Users/alexandra/Desktop/PhD/Neural Engineering/Project/202posttms.mp4', time_dilation=10)  # Slower playback 
-
-'''
     # Assume epochs are already epoched and cleaned
 
     # Define frequency band of interest
-    fmin, fmax = 13, 30  # Beta band
+    fmin, fmax = 1, 30  # Beta band
 
     # Compute power (source estimate) using inverse operator on epochs
     power_mi = mne.minimum_norm.apply_inverse_epochs(
@@ -508,7 +440,7 @@ def main():
     brain.show_view('dorsal')
 
     brain = stc_template.plot(subject=subject, subjects_dir=subjects_dir, hemi='both', views='lat')
-    brain.save_movie('/Users/alexandra/Desktop/PhD/Neural Engineering/Project/202posttms.mp4', time_dilation=10)  # Slower playback 
+    brain.save_movie('/Users/alexandra/Desktop/PhD/Neural Engineering/Project/205posttms.mp4', time_dilation=10)  # Slower playback 
 
 
 if __name__ == "__main__":
