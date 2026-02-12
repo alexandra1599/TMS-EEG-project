@@ -1,4 +1,4 @@
-# Inhibotory rTMS and MI BCI
+# Inhibitory rTMS and MI BCI
 
 This study investigates the effects of inhibitory 1 Hz
 repetitive transcranial magnetic stimulation (rTMS) on motor im-
